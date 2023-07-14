@@ -1,0 +1,37 @@
+version: '3'
+services:
+  redis:
+    image: 'redis:alpine'
+  webserver:
+    image: 'nginx:alpine'
+    working_dir: /application
+    volumes:
+      - '.:/application'
+      - './phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
+    ports:
+      - '8000:80'
+    depends_on:
+      - db
+
+  php-fpm:
+    build: phpdocker/php-fpm
+    working_dir: /application
+    volumes:
+      - './:/application'
+      - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.2/fpm/conf.d/99-overrides.ini'
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - db
+
+  db:
+    image: 'postgres:14'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: laravel
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./backup:/backup
+      - /etc/localtime:/etc/localtime:ro
