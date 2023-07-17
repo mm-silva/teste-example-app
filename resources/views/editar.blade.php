@@ -68,12 +68,22 @@
         event.preventDefault();
 
         // Obter os dados do formulário
-        var formData = new FormData(this);
+        var formData = {
+            cpf: document.getElementById('cpf').value,
+            nome: document.getElementById('nome').value,
+            sobrenome: document.getElementById('sobrenome').value,
+            data_nascimento: document.getElementById('data_nascimento').value,
+            email: document.getElementById('email').value,
+            genero: document.getElementById('genero').value,
+        };
 
         // Enviar a requisição POST
         fetch("/api/registros/{{$registro->id}}", {
             method: 'PUT',
-            body: formData
+            body: JSON.stringify(formData),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         })
         .then(function(response) {
             if (response.ok) {

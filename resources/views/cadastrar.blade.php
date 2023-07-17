@@ -62,46 +62,33 @@
 </div>
 
 <script>
-    document.getElementById('registroForm').addEventListener('submit', function(event) {
+        document.getElementById('registroForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita o envio padrão do formulário
 
+            // Obter os dados do formulário
+            var formData = new FormData(this);
 
-        function validarCPF() {
-            var cpf = document.getElementById('cpfInput').value;
-            cpf = cpf.replace(/\D/g, ''); // Remover caracteres não numéricos
-
-            if (cpf.length !== 11 || /(.)\1{10}/.test(cpf)) {
-                alert('CPF inválido');
-            } else {
-        event.preventDefault();
-
-        // Obter os dados do formulário
-        var formData = new FormData(this);
-
-        // Enviar a requisição POST
-        fetch('/api/cadastro', {
-            method: 'POST',
-            body: formData
-        })
-        .then(function(response) {
-            if (response.ok) {
-                alert('Sucesso!');
-            } else if (response.status === 422) {
-                response.json().then(function(data) {
-                    alert('Código de erro: ' + response.status + '\nMensagem de erro: ' + JSON.stringify(data));
-                });
-            } else {
+            // Enviar a requisição POST
+            fetch('/api/cadastro', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    alert('Sucesso!');
+                } else if (response.status === 422) {
+                    response.json().then(function(data) {
+                        alert('Código de erro: ' + response.status + '\nMensagem de erro: ' + JSON.stringify(data));
+                    });
+                } else {
+                    alert('Ocorreu um erro na requisição.');
+                }
+            })
+            .catch(function(error) {
                 alert('Ocorreu um erro na requisição.');
-            }
-        })
-        .catch(function(error) {
-            alert('Ocorreu um erro na requisição.');
+            });
         });
-    }
-            }
-        }
-
-    );
-</script>
+    </script>
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
