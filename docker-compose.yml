@@ -29,7 +29,3 @@ services:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
       POSTGRES_DB: laravel
-    volumes:
-      - ./postgres-data:/var/lib/postgresql/data
-      - ./backup:/backup
-      - /etc/localtime:/etc/localtime:ro
